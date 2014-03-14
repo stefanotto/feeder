@@ -3,6 +3,7 @@ require 'singleton'
 
 require 'feeder/gmail_watch.rb'
 require 'feeder/raspberry_pi.rb'
+require 'feeder/configuration.rb'
 
 module Feeder
   class CLI
@@ -16,7 +17,10 @@ module Feeder
 
     def run
       logger.debug "starting feeder .. Ada is waiting for feed"
-      @gmail = GmailWatch.new
+
+      @config = Configuration.instance
+      gmail_credentials = @config.gmail_credentials
+      @gmail = GmailWatch.new(gmail_credentials[:login], gmail_credentials[:password])
       @rpi = RaspberryPi.new
 
       while true

@@ -3,16 +3,9 @@ require 'gmail'
 module Feeder
   class GmailWatch
 
-    PASSWORD_FILE = 'config/passwd'
-    def initialize
-      read_login_data!
-    end
-
-    def read_login_data!
-      File.open(PASSWORD_FILE, 'r') do |file|
-        @gmail_login = file.readline.chomp
-        @gmail_password = file.readline.chomp
-      end
+    def initialize(login, password)
+      @login = login
+      @password = password
     end
 
     def check_mail
@@ -51,7 +44,7 @@ module Feeder
     end
 
     def login
-      @gmail = Gmail.new(@gmail_login, @gmail_password)
+      @gmail = Gmail.new(@login, @password)
     end
 
     def logout
