@@ -24,6 +24,10 @@ module Feeder
         end
       end
       got_fed
+    rescue Net::IMAP::NoResponseError
+      puts "Your Gmail credentials are incorrect!"
+      puts "Run feeder with '--setup_credentials'"
+      exit
     end
 
     def send_gratitudes(options = {})
