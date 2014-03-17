@@ -11,19 +11,17 @@ module Feeder
     def check_mail
       logger.debug "Checking mail now [#{Time.now}]."
 
-      got_fed = false
+      mails = []
       @gmail.peek = true
       @gmail.inbox.emails(:unread).each do |mail|
-        if mail.subject =~ /Lass es dir schmecken/
-          logger.info "#{mail.from} fed her."
-          logger.debug "Ada got fed by #{mail.from}."
-          send_gratitudes receiver: mail.from, message: "Danke! :)"
-          mail.mark(:read)
-          mail.archive!
-          got_fed = true
-        end
+        mails << {
+          sender: mail.from.first,
+          subject: mail.subject,
+        }
+        mail.mark(:read)
+        mail.archive!
       end
-      got_fed
+      mails
     rescue Net::IMAP::NoResponseError
       puts "Your Gmail credentials are incorrect!"
       puts "Run feeder with '--setup_credentials'"

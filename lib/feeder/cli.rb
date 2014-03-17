@@ -21,7 +21,14 @@ module Feeder
 
       while true
         @gmail.login
-        @rpi.rotate_motor if @gmail.check_mail
+        @gmail.check_mail.each do |mail|
+          if mail[:subject] =~ /Feed/
+            logger.info "#{mail[:sender]} fed her."
+            logger.debug "Ada got fed by #{mail[:sender]}."
+            @rpi.rotate_motor
+            @gmail.send_gratitudes receiver: mail[:sender], message: "Thanks! :)"
+          end
+        end
         @gmail.logout
         sleep(1)
       end
