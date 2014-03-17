@@ -16,7 +16,7 @@ module Feeder
 
       @config = Configuration.instance
       gmail_credentials = @config.gmail_credentials
-      @gmail = GmailWatch.new(gmail_credentials[:login], gmail_credentials[:password])
+      @gmail = GmailWrapper.new(gmail_credentials[:login], gmail_credentials[:password])
       @rpi = RaspberryPi.new
 
       while true

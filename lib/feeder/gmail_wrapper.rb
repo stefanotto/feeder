@@ -1,7 +1,7 @@
 require 'gmail'
 
 module Feeder
-  class GmailWatch
+  class GmailWrapper
 
     def initialize(login, password)
       @login = login
