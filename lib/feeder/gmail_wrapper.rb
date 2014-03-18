@@ -29,18 +29,21 @@ module Feeder
     end
 
     def send_gratitudes(options = {})
+      sender_address = options.fetch(:sender_address)
+      sender_name = options.fetch(:sender_name)
       receiver = options.fetch(:receiver)
-      subject_str  = options.fetch(:subject_str, "Danke!")
+      subject_str  = options.fetch(:subject_str, "Thanks!")
       message  = options.fetch(:message, "")
+      attachment = options.fetch(:attachment, nil)
 
       logger.debug "sending gratitudes to #{receiver} ..."
 
       @gmail.deliver do
-        from 'Ada <ada.goes.pi@gmail.com>'
+        from "#{sender_name} <#{sender_address}>"
         to receiver
         subject subject_str
         text_part { body message }
-        add_file "resources/ada.gif"
+        add_file attachment if attachment
       end
       logger.debug "... mail sent"
     end
