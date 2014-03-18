@@ -22,7 +22,12 @@ module Feeder
       while true
         @gmail.login
         @gmail.check_mail.each do |mail|
-          if mail[:subject] =~ /Feed/
+          user = User.find_by_email mail[:sender]
+          if user.nil?
+            logger.info "unauthorized feeding by #{mail[:sender]}"
+            break
+          end
+          if user.may_feed? mail[:subject]
             logger.info "#{mail[:sender]} fed her."
             logger.debug "Ada got fed by #{mail[:sender]}."
             @rpi.rotate_motor
