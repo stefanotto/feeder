@@ -1,8 +1,71 @@
+#!/usr/bin/env ruby
+
+require 'gli'
 require 'yell'
 require 'singleton'
 
 module Feeder
   class CLI
+
+    include Singleton
+    include GLI::App
+
+    def start
+      program_desc 'Remotely feed you pet with your Raspberry Pi'
+
+      desc 'Start the feed listener'
+      command :start do |c|
+        c.desc 'Describe a switch to run'
+        c.switch :s
+
+        c.desc 'Describe a flag to run'
+        c.default_value 'default'
+        c.flag :f
+        c.action do |global_options,options,args|
+
+        end
+      end
+
+      desc 'Describe config here'
+      arg_name 'Describe arguments to config here'
+      command :config do |c|
+        c.action do |global_options,options,args|
+          puts "config command ran"
+        end
+      end
+
+      desc 'Describe user here'
+      arg_name 'Describe arguments to user here'
+      command :user do |c|
+        c.action do |global_options,options,args|
+          puts "user command ran"
+        end
+      end
+
+      pre do |global,command,options,args|
+        # Pre logic here
+        # Return true to proceed; false to abort and not call the
+        # chosen command
+        # Use skips_pre before a command to skip this block
+        # on that command only
+        true
+      end
+
+      post do |global,command,options,args|
+        # Post logic here
+        # Use skips_post before a command to skip this
+        # block on that command only
+      end
+
+      on_error do |exception|
+        # Error logic here
+        # return false to skip default error handling
+        true
+      end
+
+      exit run(ARGV)
+    end
+=begin
     include Singleton
 
     Yell.new name: Object do |l|
@@ -43,5 +106,7 @@ module Feeder
         sleep(1)
       end
     end
+  end
+=end
   end
 end

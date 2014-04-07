@@ -6,3 +6,4 @@ gem 'pi_piper', '~> 1.3.2'
 gem 'configliere', '~> 0.4.18'
 
 gem 'rspec', :require => 'spec', :group => [:test]
+gem 'gli', '~> 2.9.0'
